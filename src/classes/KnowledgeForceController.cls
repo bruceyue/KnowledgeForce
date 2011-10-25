@@ -1,4 +1,4 @@
-/*
+/*This code is made by BruceYue on 2011-10-25
  *a controller of Knowledge Force page
  */
 public class KnowledgeForceController
