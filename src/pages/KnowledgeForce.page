@@ -1,0 +1,66 @@
+<apex:page Controller="KnowledgeForceController">
+	<apex:includescript value="{!URLFOR( $Resource.KF, 'jquery-1.6.4.min.js' )}" />
+	<apex:includescript value="{!URLFOR( $Resource.KF, 'jquery-ui-1.8.16.custom.min.js' )}" />
+	<apex:stylesheet value="{!URLFOR( $Resource.KF, 'jquery-ui-1.8.16.custom.css' )}" />
+	<apex:includescript value="{!URLFOR( $Resource.KF, 'scripts.js' )}" />
+	<style type="text/css">
+		div.helpText {
+			z-index: 5000;
+		}
+
+		div#nourls {
+			margin: 10px auto;
+			border: 3px dashed gray;
+			color: gray;
+			padding: 20px;
+			font-size: 20px;
+			width: 200px;
+			text-align: center;
+			-moz-border-radius: 5px;
+			-webkit-border-radius: 5px;
+		}
+	</style>
+	<script type="text/javascript">
+	    $j = jQuery.noConflict();
+		function disableBtn()
+	    {
+	        $j(".btn:visible").each(function () {
+				$j(this).css('display', 'none');
+				$j(this).parent().append('<input type="button" name="inlineSubmitting" title="Submitting" class="btnDisabled" value="saving..."/>');      
+	        });
+	    }
+	</script> 
+<apex:form id="theForm"> 
+	<apex:sectionheader subtitle="KnowledgeForce" title="Share everything you know!" />
+	<apex:outputpanel id="errors">
+		<apex:pagemessages />
+	</apex:outputpanel>
+	<apex:outputpanel layout="none" id="editboxpanel" >
+		<apex:pageblock title="{!If(ForceKnowledges.Id != null, 'Edit', 'New' )} URL" rendered="{!ShowEditBox}" id="editbox">
+			<apex:pageblockbuttons location="top" >
+				<apex:commandbutton value="Save" action="{!saveKnowledges}" rerender="theForm" />
+				<apex:commandbutton value="Cancel" action="{!resetURL}" rerender="editboxpanel,errors" />
+			</apex:pageblockbuttons>
+			<apex:pageblocksection showheader="false" columns="1">
+				<apex:inputfield value="{!ForceKnowledges.Url__c}" required="true" style="font-size: 14px; width: 90%" />
+				<apex:inputfield value="{!ForceKnowledges.Description__c}" style="font-size: 14px; height: 30px; width: 90%" />
+			</apex:pageblocksection>
+		</apex:pageblock>
+	</apex:outputpanel>
+	<apex:pageBlock title="UrlForce" id="urlTable">
+		<apex:pageblockbuttons location="top">
+			<apex:commandbutton value="New URL" rerender="editboxpanel" action="{!renderEditBox}" />
+			<apex:commandbutton value="Search" rerender="urlTable" action="{!setupSetController}" rendered="{!ForceUrls.size > 0}" />
+			<apex:commandbutton value="Reset" rerender="urlTable" action="{!setupSetController}" rendered="{!SearchStr != null}" >
+				<apex:param name="searchstr" assignto="{!SearchStr}" value="" />
+			</apex:commandbutton>
+		</apex:pageblockbuttons>
+	</apex:pageBlock>
+	<apex:pageBlock title="ClassForce">
+	</apex:pageBlock>
+	<apex:pageBlock title="JSForce">
+	</apex:pageBlock>
+	<apex:pageBlock title="JQueryForce">
+	</apex:pageBlock>
+</apex:form>
+</apex:page>
